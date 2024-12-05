@@ -11,8 +11,8 @@ jobs:
     docker:
       # Specify the version you desire here
       # See: https://circleci.com/developer/images/image/cimg/base
-              - name: Docker Scout
-                uses: docker/scout-action@v1.15.1
+      - name: Docker Scout
+          uses: docker/scout-action@v1.15.1
             
 
     # Add steps to the job
