@@ -1,19 +1,25 @@
-FROM centos:centos6
+# Usa una versione più recente di CentOS (o considerare l'uso di un'immagine più moderna come AlmaLinux o Ubuntu)
+FROM centos:centos8
 
-MAINTAINER contact@btreepress.com
+LABEL maintainer="contact@btreepress.com"
 
-# Enable EPEL for Node.js
-RUN rpm -Uvh https://archives.fedoraproject.org/pub/archive/epel/6/i386/epel-release-6-8.noarch.rpm
+# Aggiorna il sistema e installa Node.js dal modulo AppStream
+RUN dnf update -y && \
+    dnf module enable -y nodejs:14 && \
+    dnf install -y nodejs npm && \
+    dnf clean all
 
-# Install Node...
-RUN yum install -y npm
+# Imposta la directory di lavoro
+WORKDIR /src
 
-# Copy app to /src
-COPY . /src
+# Copia i file dell'applicazione nella directory di lavoro
+COPY . .
 
-# Install app and dependencies into /src
-RUN cd /src; npm install
+# Installa le dipendenze dell'applicazione
+RUN npm install
 
+# Espone la porta 8080
 EXPOSE 8080
 
-CMD cd /src && node ./app.js
+# Comando di default per avviare l'applicazione
+CMD ["node", "app.js"]
